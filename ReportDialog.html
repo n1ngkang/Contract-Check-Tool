@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 15px; 
+      background-color: #f5f5f5; 
+      color: #333; 
+    }
+    
+    h3 { 
+      border-bottom: 2px solid #4a86e8; 
+      padding-bottom: 8px; 
+      margin-top: 0; 
+      color: #4a86e8; 
+    }
+    
+    .summary { 
+      font-weight: bold; 
+      margin-bottom: 20px; 
+      font-size: 1.1em;
+      padding: 10px;
+      background: white;
+      border-radius: 4px;
+    }
+    
+    .error-item { 
+      border-left: 4px solid #ffcc00;
+      padding: 12px; 
+      margin-bottom: 12px; 
+      background-color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .error-item:hover { 
+      background-color: #fffbf0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    
+    .error-item.not-found { border-left-color: #d32f2f; }
+    .error-item.warning { border-left-color: #4a86e8; }
+    
+    .restaurant-name { 
+      font-size: 1.1em; 
+      font-weight: bold; 
+      color: #000; 
+      margin-bottom: 8px;
+    }
+    
+    .error-line { 
+      padding: 6px 0;
+      border-bottom: 1px dotted #e0e0e0;
+    }
+    
+    .error-line:last-child {
+      border-bottom: none;
+    }
+    
+    .field-name { 
+      display: inline-block;
+      min-width: 150px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .csm-value { 
+      color: #d32f2f; 
+      font-weight: bold;
+    }
+    
+    .warning-value { 
+      color: #4a86e8; 
+      font-weight: bold;
+    }
+    
+    .row-number {
+      float: right;
+      color: #999;
+      font-size: 0.9em;
+    }
+    
+    .no-errors {
+      text-align: center;
+      padding: 40px 20px;
+      color: #4caf50;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h3>詳細資訊</h3>
+  
+  <div class="summary">
+    總檢查: <strong><?= totalChecked ?></strong> 筆 | 
+    問題數: <strong style="color: <?= errorCount > 0 ? '#d32f2f' : '#4caf50' ?>;"><?= errorCount ?></strong> 筆
+  </div>
+  
+  <div id="error-list">
+    <? if (reportData.length > 0) { ?>
+      <? reportData.forEach(function(item) { 
+        const hasNotFound = item.type === 'NOT_FOUND';
+        const hasWarningOnly = item.errors && item.errors.every(e => e.type === 'WARNING');
+        const itemClass = hasNotFound ? 'not-found' : (hasWarningOnly ? 'warning' : '');
+      ?>
+        <div class="error-item <?= itemClass ?>" 
+             onclick="google.script.run.jumpToRow(<?= item.rowIndex ?>, '<?= fileId ?>', '<?= sheetName ?>')">
+          
+          <div class="restaurant-name">
+            <?= item.restaurantName ?>
+            <span class="row-number">行號: <?= item.rowIndex ?></span>
+          </div>
+          
+          <? if (hasNotFound) { ?>
+            <div class="error-line">
+              <span class="field-name">❌ 找不到合約 ID:</span>
+              <span class="csm-value"><?= item.contractId ?></span>
+            </div>
+          <? } else if (item.errors && item.errors.length > 0) { ?>
+            <? item.errors.forEach(function(err) { 
+              const isError = err.type === 'ERROR';
+              const isWarning = err.type === 'WARNING';
+              const icon = isError ? '⚠️' : '💡';
+              const valueClass = isError ? 'csm-value' : 'warning-value';
+            ?>
+              <div class="error-line">
+                <span class="field-name"><?= icon ?> <?= item.type ?>-<?= err.field ?>:</span>
+                <span class="<?= valueClass ?>">
+                  <?= err.target !== '' ? err.target : '(空值)' ?>
+                </span>
+                <? if (isWarning) { ?>
+                  <span style="color: #999; font-size: 0.9em; margin-left: 8px;">
+                    (一邊無值一邊有值)
+                  </span>
+                <? } ?>
+              </div>
+            <? }); ?>
+          <? } ?>
+        </div>
+      <? }); ?>
+    <? } else { ?>
+      <div class="no-errors">
+        <div style="font-size: 3em; margin-bottom: 10px;">✅</div>
+        所有方案均符合標準
+      </div>
+    <? } ?>
+  </div>
+</body>
+</html>
