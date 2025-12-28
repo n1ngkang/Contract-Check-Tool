@@ -1,9 +1,8 @@
 # Automated Billing Verifier
 
 ## Executive Summary
-This project is a high-precision Verification Engine developed via Google Apps Script (GAS). 
-It is engineered to safeguard data integrity between dynamic Subscription Contracts and the Customer Success Management (CSM) database. 
-By resolving cross-file data retrieval bottlenecks and implementing multi-layered verification logic, the engine proactively detects billing discrepancies, ensuring 100% accuracy before billing cycle execution.
+This GAS-powered Verification Engine safeguards financial integrity through a dual-layer audit system: the checkTPR engine ensures CSM database synchronization, 
+while the checkCB module automates complex RSV/Deposit billing validation.
 
 ## Project Structure
 1. [interface.js](./interface.js) - UI initialization and custom menu management.
@@ -26,15 +25,11 @@ By resolving cross-file data retrieval bottlenecks and implementing multi-layere
   <em>Left: Discrepancy Alert Mode | Right: Success Confirmation Mode</em>
 </p>
 
-## Core Technical Contributions
-### Multi-Faceted Validation Logic
-* **Shared ID Integrity**: Utilizes a ```SharedIdMap``` to synchronize overage pools across multiple restaurant entities.
-* **Deposit & Commission Logic**: Automatically distinguishes between B2B and B2C structures based on fee presence, enforcing strict format and numerical fidelity.
-* **Diverse Output Methods**: Combines Dynamic Background Matrix (Sheet highlighting) with an Interactive HTML Sidebar (Data itemization) for comprehensive auditing.
-### Performance Optimization & Latency Mitigation
-* **Sectional Data Indexing**: Replaced iterative API calls with a Sectional Retrieval strategy, fetching specific data blocks (ID & Billing) into memory.
-* **Startup Acceleration**: Migrated from ```openById``` to ```getActiveSpreadsheet``` for local operations, reducing unstable execution time from 250+ seconds to under 20 seconds.
-### Setup and Deployment
-This project utilizes modern version control practices and is deployed via Clasp.
-* **Prerequisites**: Node.js, npm, and Clasp.
-* **Secure Configuration**: Database IDs are managed via Script Properties (```PropertiesService```) to ensure zero exposure in source code.
+## Core Engine Logic
+* **Data Integrity Sync (`checkTPR`)**: Ensures the "Source of Truth" by triple-checking active contracts against **CSM database** snapshots, preventing unauthorized data decay or manual input errors.
+* **Precision Billing Audit (`checkCB`)**: Validates complex **RSV/Deposit** schemas, utilizing a `SharedIdMap` for overage consistency and **Price Range Evaluation** to distinguish between standard and negotiated plans.
+* **Diverse Output Strategy**: Combines **Atomic Sheet Highlighting** (for bulk visual cues) with an **Interactive HTML5 Sidebar** (for granular discrepancy navigation).
+
+## Technical Highlights
+* **Performance Optimization**: Implemented **Sectional Memory Caching** to reduce cross-file latency, slashing execution time from **250s to <20s**.
+* **Enterprise-Grade Security**: Sensitive database IDs and API endpoints are managed via **Script Properties** (`PropertiesService`), ensuring zero credential exposure in source code.
