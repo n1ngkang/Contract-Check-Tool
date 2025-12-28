@@ -1,4 +1,4 @@
-# Automated Billing Verifier
+# Contract and Billing Verifier
 
 ## Executive Summary
 This GAS-powered Verification Engine safeguards financial integrity through a dual-layer audit system: the checkTPR engine ensures CSM database synchronization, 
