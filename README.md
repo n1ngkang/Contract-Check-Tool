@@ -9,6 +9,7 @@ while the checkCB module automates complex RSV/Deposit billing validation.
 2. [checkTPR.js](./checkTPR.js) - Triple Check engine: Cross-verifies contract details with historical CSM records.
 3. [ReportDialog.html](./ReportDialog.html) - Interactive HTML5 sidebar for discrepancy visualization and navigation.
 4. [checkCB.js](./checkCB.js) - Billing & Plan Auditor: Validates billing rows against master Plan tables (RSV/Deposit).
+5. [clearCB.js](./clearCB.js) - One-click Reset Function: Clear all previous validation data and prepare the interface for the next check.
 
 ## UI Preview & Interactive Features
 * **Hierarchical View**: Each record is grouped by **Restaurant Name** (displayed as the header of each card for quick identification).
