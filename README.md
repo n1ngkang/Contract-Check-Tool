@@ -12,8 +12,8 @@ while the checkCB module automates complex RSV/Deposit billing validation.
 
 ## UI Preview & Interactive Features
 * **Hierarchical View**: Each record is grouped by **Restaurant Name** (displayed as the header of each card for quick identification).
-* **Status Indicators**: Uses color-coded borders (Yellow/Red) to highlight discrepancies.
-* **Direct Navigation**: Clicking any card will trigger `jumpToRow()` to locate the data in the spreadsheet.
+* **Dynamic Status Indicators**: Utilizes color-coded visual cues (e.g., Yellow/Red borders) to instantly flag data discrepancies and urgent issues.
+* **Direct Contract Access**: Each record now includes a direct Contract Link. If a discrepancy is found, users can instantly jump to the source document to verify the original data, eliminating the need to manual search.
 * *(Note: Restaurant names are hidden in the preview images below due to privacy policies.)*
 
 <p align="center">
